@@ -1,8 +1,8 @@
-package tasks;
+package com.yandex.app.model;
 
-import java.util.Objects;
+import com.yandex.app.Status.TaskStatus;
 
-public class Subtask extends Task{
+public class Subtask extends Task {
 
     private final int epicId;
 

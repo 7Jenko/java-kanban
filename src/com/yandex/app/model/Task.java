@@ -1,4 +1,6 @@
-package tasks;
+package com.yandex.app.model;
+
+import com.yandex.app.Status.TaskStatus;
 
 import java.util.Objects;
 
@@ -62,5 +64,18 @@ public class Task {
         if (object == null || getClass() != object.getClass()) return false;
         Task task = (Task) object;
         return id == task.id && Objects.equals(name, task.name) && status == task.status && Objects.equals(description, task.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, status, description);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

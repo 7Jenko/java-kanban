@@ -1,7 +1,10 @@
-import tasks.Epic;
-import tasks.Subtask;
-import tasks.Task;
-import tasks.TaskStatus;
+package com.yandex.app;
+
+import com.yandex.app.Status.TaskStatus;
+import com.yandex.app.model.Epic;
+import com.yandex.app.model.Subtask;
+import com.yandex.app.model.Task;
+import com.yandex.app.service.TasksManager;
 
 public class Main {
 
@@ -23,9 +26,9 @@ public class Main {
         subtask1 = new Subtask(subtaskId1, subtask1.getName(), subtask1.getStatus(), subtask1.getDescription(),
                 epicId1);
 
-        Subtask subtask2 = new Subtask("Грузовая машина", TaskStatus.NEW,
+        Subtask subtask2 = new Subtask("Грузовая машина", TaskStatus.DONE,
                 "Нанять грузчиков в помощь", epicId1);
-        final int subtaskId2 = manager.addNewSubtask(subtask1);
+        final int subtaskId2 = manager.addNewSubtask(subtask2);
         subtask2 = new Subtask(subtaskId2, subtask2.getName(), subtask2.getStatus(), subtask2.getDescription(),
                 epicId1);
 
@@ -37,7 +40,7 @@ public class Main {
         final int epicId2 = manager.addNewEpic(epic2);
         epic2 = new Epic(epicId2, epic2.getName(), epic2.getStatus(), epic2.getDescription());
 
-        Subtask subtask3 = new Subtask("Список продуктов", TaskStatus.NEW,
+        Subtask subtask3 = new Subtask("Список продуктов", TaskStatus.DONE,
                 "Проверить наличие продуктов дома", epicId2);
         final int subtaskId3 = manager.addNewSubtask(subtask3);
         subtask3 = new Subtask(subtaskId3, subtask3.getName(), subtask3.getStatus(), subtask3.getDescription(),
@@ -47,8 +50,8 @@ public class Main {
         System.out.println(manager.getTasks());
         System.out.println(manager.getSubtasks());
         System.out.println();
-        manager.removeSubtaskById(3);
-        manager.removeTaskById(5);
+//        manager.removeSubtaskById(3);
+//        manager.removeTaskById(5);
         System.out.println(manager.getEpics());
         System.out.println(manager.getTasks());
         System.out.println(manager.getSubtasks());
