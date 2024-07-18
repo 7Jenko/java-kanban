@@ -7,10 +7,6 @@ import java.util.Objects;
 public class Epic extends Task {
 
     private ArrayList<Subtask> subtaskList = new ArrayList<>();
-    /* Яков, привет. На вебинаре нам наставник говорил, что допустимо хранить и сабтасками и айдишниками, а у меня много
-    методов завязано именно на хранении сабтасками. Если это не грубая ошибка, на данном этапе обучения, можно оставить
-    таким образом?
-    */
 
     public Epic(int id, String name, TaskStatus status, String description) {
         super(id, name, status, description);

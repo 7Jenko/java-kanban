@@ -133,8 +133,7 @@ public class TasksManager {
 
             ArrayList<Subtask> subtaskList = epic.getSubtaskList();
 
-            for (Subtask subtask : subtaskList) { // использую конструкцию if - else if - else дальше, данный цикл для
-                // пересчета статусов
+            for (Subtask subtask : subtaskList) {
                 if (subtask.getStatus() == TaskStatus.DONE) {
                     doneCount++;
                 } else if (subtask.getStatus() == TaskStatus.NEW) {
