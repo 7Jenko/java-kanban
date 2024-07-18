@@ -1,6 +1,6 @@
 package com.yandex.app.service;
 
-import com.yandex.app.Status.TaskStatus;
+import com.yandex.app.status.TaskStatus;
 import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
@@ -94,20 +94,15 @@ public class TasksManager {
         Epic oldEpic = epics.get(epic.getId());
         oldEpic.setName(epic.getName());
         oldEpic.setDescription(epic.getDescription());
-        return epic;
+        return oldEpic;
     }
 
-    public Subtask updateSubtask(Subtask subtask, Epic epic) {
+    public Subtask updateSubtask(Subtask subtask) {
         int epicId = subtask.getEpicId();
         Subtask oldSubtask = subtasks.get(subtask.getId());
-        oldSubtask.setId(subtask.getId());
         oldSubtask.setName(subtask.getName());
         oldSubtask.setDescription(subtask.getDescription());
-        epic = epics.get(epicId);
-        ArrayList<Subtask> subtaskList = epic.getSubtaskList();
-        subtaskList.remove(oldSubtask);
-        subtaskList.add(subtask);
-        epic.setSubtaskList(subtaskList);
+        Epic epic = epics.get(epicId);
         updateEpicStatus(epic);
         return subtask;
     }
@@ -117,21 +112,15 @@ public class TasksManager {
     }
 
     public void removeEpicById(int id) {
-        ArrayList<Subtask> epicSubtasks = epics.get(id).getSubtaskList();
-        epics.remove(id);
-        for (Subtask subtask : getEpicById(id).getSubtaskList()) {
-            subtasks.remove(subtask.getId());
-        }
+        ArrayList<Subtask> epicSubtasks = epics.remove(id).getSubtaskList();
     }
 
     public void removeSubtaskById(int id) {
-        Subtask subtask = subtasks.get(id);
+        Subtask subtask = subtasks.remove(id);
         int epicId = subtask.getEpicId();
-        subtasks.remove(id);
         Epic epic = epics.get(epicId);
         ArrayList<Subtask> subtaskList = epic.getSubtaskList();
         subtaskList.remove(subtask);
-        epic.setSubtaskList(subtaskList);
         updateEpicStatus(epic);
     }
 
@@ -145,11 +134,14 @@ public class TasksManager {
             ArrayList<Subtask> subtaskList = epic.getSubtaskList();
 
             for (Subtask subtask : subtaskList) { // использую конструкцию if - else if - else дальше, данный цикл для
-                                                  // пересчета статусов
+                // пересчета статусов
                 if (subtask.getStatus() == TaskStatus.DONE) {
                     doneCount++;
                 } else if (subtask.getStatus() == TaskStatus.NEW) {
                     newCount++;
+                } else {
+                    epic.setStatus(TaskStatus.IN_PROGRESS);
+                    return;
                 }
             }
             if (doneCount == subtaskList.size()) {

@@ -1,6 +1,6 @@
 package com.yandex.app.model;
 
-import com.yandex.app.Status.TaskStatus;
+import com.yandex.app.status.TaskStatus;
 
 import java.util.Objects;
 

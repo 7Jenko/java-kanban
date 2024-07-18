@@ -1,7 +1,8 @@
 package com.yandex.app.model;
-import com.yandex.app.Status.TaskStatus;
+import com.yandex.app.status.TaskStatus;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Epic extends Task {
 
@@ -44,5 +45,19 @@ public class Epic extends Task {
                 ", status=" + status +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        if (!super.equals(object)) return false;
+        Epic epic = (Epic) object;
+        return Objects.equals(subtaskList, epic.subtaskList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), subtaskList);
     }
 }

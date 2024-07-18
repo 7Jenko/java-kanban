@@ -1,6 +1,6 @@
 package com.yandex.app;
 
-import com.yandex.app.Status.TaskStatus;
+import com.yandex.app.status.TaskStatus;
 import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
@@ -50,8 +50,8 @@ public class Main {
         System.out.println(manager.getTasks());
         System.out.println(manager.getSubtasks());
         System.out.println();
-//        manager.removeSubtaskById(3);
-//        manager.removeTaskById(5);
+        manager.removeSubtaskById(3);
+        manager.removeTaskById(5);
         System.out.println(manager.getEpics());
         System.out.println(manager.getTasks());
         System.out.println(manager.getSubtasks());
