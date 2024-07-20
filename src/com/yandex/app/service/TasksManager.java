@@ -101,7 +101,7 @@ public class TasksManager {
         int epicId = subtask.getEpicId();
         Subtask oldSubtask = subtasks.get(subtask.getId());
         oldSubtask.setName(subtask.getName());
-        oldSubtask.setDescription(subtask.getDescription());
+        oldSubtask.setStatus(subtask.getStatus());
         Epic epic = epics.get(epicId);
         updateEpicStatus(epic);
         return subtask;
@@ -113,6 +113,9 @@ public class TasksManager {
 
     public void removeEpicById(int id) {
         ArrayList<Subtask> epicSubtasks = epics.remove(id).getSubtaskList();
+        for (Subtask subtask : epicSubtasks) {
+            subtasks.remove(subtask.getId());
+        }
     }
 
     public void removeSubtaskById(int id) {
