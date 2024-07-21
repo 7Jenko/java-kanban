@@ -1,15 +1,16 @@
 package com.yandex.app;
 
+import com.yandex.app.service.Managers;
+import com.yandex.app.service.TaskManager;
 import com.yandex.app.status.TaskStatus;
 import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
-import com.yandex.app.service.TasksManager;
 
 public class Main {
 
     public static void main(String[] args) {
-        TasksManager manager = new TasksManager();
+        TaskManager manager = Managers.getDefault();
 
         Task task1 = new Task("Переезд", TaskStatus.NEW, "Собрать вещи");
         final int taskId1 = manager.addNewTask(task1);
@@ -46,14 +47,60 @@ public class Main {
         subtask3 = new Subtask(subtaskId3, subtask3.getName(), subtask3.getStatus(), subtask3.getDescription(),
                 epicId2);
 
-        System.out.println(manager.getEpics());
-        System.out.println(manager.getTasks());
-        System.out.println(manager.getSubtasks());
-        System.out.println();
-        manager.removeSubtaskById(3);
-        manager.removeTaskById(5);
-        System.out.println(manager.getEpics());
-        System.out.println(manager.getTasks());
-        System.out.println(manager.getSubtasks());
+//        System.out.println(manager.getEpics());
+//        System.out.println(manager.getTasks());
+//        System.out.println(manager.getSubtasks());
+//        System.out.println();
+//        System.out.println(manager.getEpic(2));
+//        System.out.println(manager.getTask(1));
+//        System.out.println(manager.getSubtask(3));
+//        System.out.println(manager.getEpic(6));
+//        System.out.println(manager.getTask(5));
+//        System.out.println(manager.getSubtask(4));
+//        System.out.println(manager.getSubtask(7));
+//        System.out.println(manager.getEpic(2));
+//        System.out.println(manager.getTask(1));
+//        System.out.println(manager.getSubtask(3));
+//        System.out.println();
+//        System.out.println(manager.getHistory());
+//        System.out.println();
+//        System.out.println(manager.getEpic(6));
+//        System.out.println();
+//        System.out.println(manager.getHistory());
+        System.out.println(manager.getEpic(2));
+        System.out.println(manager.getTask(1));
+        System.out.println(manager.getSubtask(3));
+        System.out.println(manager.getEpic(6));
+        System.out.println(manager.getTask(5));
+        System.out.println(manager.getSubtask(4));
+        System.out.println(manager.getSubtask(7));
+        System.out.println(manager.getEpic(2));
+        System.out.println(manager.getTask(1));
+        System.out.println(manager.getSubtask(3));
+        System.out.println(manager.getEpic(6));
+        printAllTasks(manager);
+    }
+    private static void printAllTasks(TaskManager manager) {
+        System.out.println("Задачи:");
+        for (Task task : manager.getTasks()) {
+            System.out.println(task);
+        }
+        System.out.println("Эпики:");
+        for (Task epic : manager.getEpics()) {
+            System.out.println(epic);
+
+            for (Task task : manager.getEpicSubtasks(epic.getId())) {
+                System.out.println("--> " + task);
+            }
+        }
+        System.out.println("Подзадачи:");
+        for (Task subtask : manager.getSubtasks()) {
+            System.out.println(subtask);
+        }
+
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
     }
 }
