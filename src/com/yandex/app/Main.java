@@ -47,37 +47,17 @@ public class Main {
         subtask3 = new Subtask(subtaskId3, subtask3.getName(), subtask3.getStatus(), subtask3.getDescription(),
                 epicId2);
 
-//        System.out.println(manager.getEpics());
-//        System.out.println(manager.getTasks());
-//        System.out.println(manager.getSubtasks());
-//        System.out.println();
-//        System.out.println(manager.getEpic(2));
-//        System.out.println(manager.getTask(1));
-//        System.out.println(manager.getSubtask(3));
-//        System.out.println(manager.getEpic(6));
-//        System.out.println(manager.getTask(5));
-//        System.out.println(manager.getSubtask(4));
-//        System.out.println(manager.getSubtask(7));
-//        System.out.println(manager.getEpic(2));
-//        System.out.println(manager.getTask(1));
-//        System.out.println(manager.getSubtask(3));
-//        System.out.println();
-//        System.out.println(manager.getHistory());
-//        System.out.println();
-//        System.out.println(manager.getEpic(6));
-//        System.out.println();
-//        System.out.println(manager.getHistory());
-        System.out.println(manager.getEpic(2));
-        System.out.println(manager.getTask(1));
-        System.out.println(manager.getSubtask(3));
-        System.out.println(manager.getEpic(6));
-        System.out.println(manager.getTask(5));
-        System.out.println(manager.getSubtask(4));
-        System.out.println(manager.getSubtask(7));
-        System.out.println(manager.getEpic(2));
-        System.out.println(manager.getTask(1));
-        System.out.println(manager.getSubtask(3));
-        System.out.println(manager.getEpic(6));
+        manager.getEpic(2);
+        manager.getTask(15);
+        manager.getSubtask(3);
+        manager.getEpic(6);
+        manager.getTask(5);
+        manager.getSubtask(4);
+        manager.getSubtask(7);
+        manager.getEpic(2);
+        manager.getTask(1);
+        manager.getSubtask(3);
+        manager.getEpic(6);
         printAllTasks(manager);
     }
     private static void printAllTasks(TaskManager manager) {

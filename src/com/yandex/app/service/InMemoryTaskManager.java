@@ -8,11 +8,12 @@ import com.yandex.app.model.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
-    private final HashMap<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final Map<Integer, Subtask> subtasks = new HashMap<>();
+    private final Map<Integer, Epic> epics = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     private int generatorId = 0;
@@ -51,7 +52,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> getTasks() {
+    public List<Task> getTasks() {
         return new ArrayList<>(tasks.values());
     }
 
@@ -62,7 +63,7 @@ public class InMemoryTaskManager implements TaskManager {
         return task;
     }
 
-    public ArrayList<Epic> getEpics() {
+    public List<Epic> getEpics() {
         return new ArrayList<>(epics.values());
     }
 
@@ -73,12 +74,12 @@ public class InMemoryTaskManager implements TaskManager {
         return epic;
     }
 
-    public ArrayList<Subtask> getSubtasks() {
+    public List<Subtask> getSubtasks() {
         return new ArrayList<>(subtasks.values());
     }
 
     @Override
-    public ArrayList<Subtask> getEpicSubtasks(int id) {
+    public List<Subtask> getEpicSubtasks(int id) {
         Epic epic = epics.get(id);
         return epic.getSubtaskList();
     }
@@ -185,7 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
             int doneCount = 0;
             int newCount = 0;
 
-            ArrayList<Subtask> subtaskList = epic.getSubtaskList();
+            List<Subtask> subtaskList = epic.getSubtaskList();
 
             for (Subtask subtask : subtaskList) {
                 if (subtask.getStatus() == TaskStatus.DONE) {

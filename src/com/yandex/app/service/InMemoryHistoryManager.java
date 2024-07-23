@@ -5,20 +5,21 @@ import com.yandex.app.model.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryHistoryManager implements HistoryManager{
-    private final ArrayList<Task> list = new ArrayList<>();
+public class InMemoryHistoryManager implements HistoryManager {
+    private final List<Task> list = new ArrayList<>();
+    private static final int listSizeForHistory = 10;
 
     @Override
     public List<Task> getHistory() {
-        return list;
+        return List.copyOf(list);
     }
 
     @Override
     public void addTask(Task task) {
-        if (list.size() == 10){
-            list.removeFirst();
-            list.add(task);
-        } else {
+        if (task != null) {
+            if (list.size() >= listSizeForHistory) {
+                list.removeFirst();
+            }
             list.add(task);
         }
     }
