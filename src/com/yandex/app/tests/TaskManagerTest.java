@@ -6,10 +6,11 @@ import com.yandex.app.model.Task;
 import com.yandex.app.service.Managers;
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.status.TaskStatus;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class TaskManagerTest {
     @Test
@@ -102,7 +103,7 @@ class TaskManagerTest {
         Subtask subtask1 = new Subtask(2, "Subtask1", TaskStatus.NEW, "description", 1);
         manager.addNewSubtask(subtask1);
         manager.removeSubtaskById(2);
-        Assertions.assertEquals(manager.getSubtasks(), "Удаляемая подзадача не хранит в себе старый Id");
+        assertEquals(manager.getSubtasks(), "Удаляемая подзадача не хранит в себе старый Id");
         }
 
     @Test
@@ -113,7 +114,7 @@ class TaskManagerTest {
         Subtask subtask1 = new Subtask(2, "Subtask1", TaskStatus.NEW, "description", 1);
         manager.addNewSubtask(subtask1);
         manager.removeSubtaskById(2);
-        Assertions.assertEquals(manager.getEpicSubtasks(1), "Список эпиков пуст");
+        assertEquals(manager.getEpicSubtasks(1), "Список эпиков пуст");
     }
 
     @Test
