@@ -71,7 +71,7 @@ class TaskManagerTest {
     }
 
     @Test
-    void immutabilityAddingTaskToManager(){
+    void immutabilityAddingTaskToManager() {
         TaskManager manager = Managers.getDefault();
         Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description1");
         manager.addNewTask(task1);
@@ -82,7 +82,7 @@ class TaskManagerTest {
     }
 
     @Test
-    void givenIdGeneratedIdDontConflict(){
+    void givenIdGeneratedIdDontConflict() {
         TaskManager manager = Managers.getDefault();
         Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description1");
         manager.addNewTask(task1);
@@ -93,8 +93,9 @@ class TaskManagerTest {
         assertArrayEquals(arrayOne, arrayTwo, "Задачи с заданным id и сгенерированным id не конфликтуют " +
                 "внутри менеджера");
     }
+
     @Test
-    void deletedSubtasksShouldNotStoreOldIds(){
+    void deletedSubtasksShouldNotStoreOldIds() {
         TaskManager manager = Managers.getDefault();
         Epic epic1 = new Epic(1, "Epic1", TaskStatus.NEW, "description");
         manager.addNewEpic(epic1);
@@ -105,7 +106,7 @@ class TaskManagerTest {
         }
 
     @Test
-    void shouldBeNoIrrelevantIdSubtasksInsideEpics(){
+    void shouldBeNoIrrelevantIdSubtasksInsideEpics() {
         TaskManager manager = Managers.getDefault();
         Epic epic1 = new Epic(1, "Epic1", TaskStatus.NEW, "description");
         manager.addNewEpic(epic1);
@@ -116,7 +117,7 @@ class TaskManagerTest {
     }
 
     @Test
-    void usingSettersAllowToChangeTheirFields(){
+    void usingSettersAllowToChangeTheirFields() {
         TaskManager manager = Managers.getDefault();
         Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description1");
         final int taskId1 = manager.addNewTask(task1);
