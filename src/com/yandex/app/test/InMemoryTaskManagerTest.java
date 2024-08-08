@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class TaskManagerTest {
+class InMemoryTaskManagerTest {
     @Test
     void taskIdEquals() {
         Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description");

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-public class HistoryManagerTest {
+public class InMemoryHistoryManagerTest {
     @Test
     void addTaskInHistory() {
         HistoryManager manager = Managers.getDefaultHistory();
