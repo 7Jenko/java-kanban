@@ -1,4 +1,4 @@
-package test;
+package com.yandex.app.test;
 
 import com.yandex.app.service.InMemoryHistoryManager;
 import com.yandex.app.service.InMemoryTaskManager;
