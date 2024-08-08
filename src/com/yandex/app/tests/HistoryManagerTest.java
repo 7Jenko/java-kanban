@@ -18,6 +18,7 @@ public class HistoryManagerTest {
         final List<Task> history = manager.getHistory();
         Assertions.assertEquals(history, "В истории просмотров есть " + task1);
     }
+
     @Test
     void removeTaskFromHistory() {
         HistoryManager manager = Managers.getDefaultHistory();
