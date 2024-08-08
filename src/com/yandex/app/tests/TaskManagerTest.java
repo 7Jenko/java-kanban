@@ -6,6 +6,7 @@ import com.yandex.app.model.Task;
 import com.yandex.app.service.Managers;
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.status.TaskStatus;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -91,5 +92,39 @@ class TaskManagerTest {
         Task[] arrayTwo = new Task[]{task2};
         assertArrayEquals(arrayOne, arrayTwo, "Задачи с заданным id и сгенерированным id не конфликтуют " +
                 "внутри менеджера");
+    }
+    @Test
+    void deletedSubtasksShouldNotStoreOldIds(){
+        TaskManager manager = Managers.getDefault();
+        Epic epic1 = new Epic(1, "Epic1", TaskStatus.NEW, "description");
+        manager.addNewEpic(epic1);
+        Subtask subtask1 = new Subtask(2, "Subtask1", TaskStatus.NEW, "description", 1);
+        manager.addNewSubtask(subtask1);
+        manager.removeSubtaskById(2);
+        Assertions.assertEquals(manager.getSubtasks(), "Удаляемая подзадача не хранит в себе старый Id");
+        }
+
+    @Test
+    void shouldBeNoIrrelevantIdSubtasksInsideEpics(){
+        TaskManager manager = Managers.getDefault();
+        Epic epic1 = new Epic(1, "Epic1", TaskStatus.NEW, "description");
+        manager.addNewEpic(epic1);
+        Subtask subtask1 = new Subtask(2, "Subtask1", TaskStatus.NEW, "description", 1);
+        manager.addNewSubtask(subtask1);
+        manager.removeSubtaskById(2);
+        Assertions.assertEquals(manager.getEpicSubtasks(1), "Список эпиков пуст");
+    }
+
+    @Test
+    void usingSettersAllowToChangeTheirFields(){
+        TaskManager manager = Managers.getDefault();
+        Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description1");
+        final int taskId1 = manager.addNewTask(task1);
+        /*final*/ Task task2 = new Task("Task2", TaskStatus.NEW, "description2");
+        task2 = new Task(taskId1, task2.getName(), task2.getStatus(), task2.getDescription());
+        Task[] arrayOne = new Task[]{task1};
+        Task[] arrayTwo = new Task[]{task2};
+        assertArrayEquals(arrayOne, arrayTwo, "Задачи с одинаковыми id должны быть одинаковыми. " +
+                "Чтобы не допустить изменений полей с помощью сеттеров, используйте final в объявлении задач.");
     }
 }
