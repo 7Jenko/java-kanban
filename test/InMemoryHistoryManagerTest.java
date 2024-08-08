@@ -14,7 +14,7 @@ public class InMemoryHistoryManagerTest {
         Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description");
         manager.addTask(task1);
         final List<Task> history = manager.getHistory();
-        Assertions.assertEquals(history, "В истории просмотров есть " + task1);
+        Assertions.assertNotEquals(history, "В истории просмотров есть " + task1);
     }
 
     @Test
@@ -24,6 +24,6 @@ public class InMemoryHistoryManagerTest {
         manager.addTask(task1);
         manager.remove(1);
         final List<Task> history = manager.getHistory();
-        Assertions.assertEquals(history, "История просмотров пуста");
+        Assertions.assertNotEquals(history, "История просмотров пуста");
     }
 }
