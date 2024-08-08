@@ -1,5 +1,3 @@
-package com.yandex.app.tests;
-
 import com.yandex.app.service.InMemoryHistoryManager;
 import com.yandex.app.service.InMemoryTaskManager;
 import com.yandex.app.service.Managers;
