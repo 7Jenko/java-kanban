@@ -15,7 +15,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        return List.copyOf(getTasks());
+        return getTasks();
     }
 
     @Override
@@ -31,6 +31,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void remove(int id) {
         removeNode(history.get(id));
+        history.remove(id);
     }
 
     private List<Task> getTasks() {
