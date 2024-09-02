@@ -5,27 +5,43 @@ import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final Map<Integer, Subtask> subtasks = new HashMap<>();
-    private final Map<Integer, Epic> epics = new HashMap<>();
+    protected static final Map<Integer, Task> tasks = new HashMap<>();
+    protected static final Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected static final Map<Integer, Epic> epics = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
-    private int generatorId = 0;
+    protected int generatorId = 0;
 
     @Override
-    public int generatorId() {
+    public ArrayList<Task> getAllTasks() {
+        return new ArrayList<>(tasks.values());
+    }
+
+    @Override
+    public ArrayList<Epic> getAllEpics() {
+        return new ArrayList<>(epics.values());
+    }
+
+    @Override
+    public ArrayList<Subtask> getAllSubtasks() {
+        return new ArrayList<>(subtasks.values());
+    }
+
+    @Override
+    public int generatorId(){
         generatorId++;
         return generatorId;
     }
 
     @Override
-    public int addNewTask(Task task) {
+    public int addNewTask(Task task) throws IOException {
         final int id = ++generatorId;
         task.setId(id);
         tasks.put(id, task);
@@ -33,7 +49,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addNewEpic(Epic epic) {
+    public int addNewEpic(Epic epic) throws IOException {
         final int id = ++generatorId;
         epic.setId(id);
         epics.put(id, epic);
@@ -41,7 +57,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addNewSubtask(Subtask subtask) {
+    public int addNewSubtask(Subtask subtask) throws IOException {
         final int id = ++generatorId;
         subtask.setId(id);
         subtasks.put(id, subtask);
@@ -92,18 +108,18 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTasks() {
+    public void removeTasks() throws IOException {
         tasks.clear();
     }
 
     @Override
-    public void removeEpics() {
+    public void removeEpics() throws IOException {
         epics.clear();
         subtasks.clear();
     }
 
     @Override
-    public void removeSubtasks() {
+    public void removeSubtasks() throws IOException {
         subtasks.clear();
         for (Epic epic : epics.values()) {
             epic.removeSubtasks();
@@ -127,13 +143,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task updateTask(Task task) {
+    public Task updateTask(Task task) throws IOException {
         tasks.put(task.getId(), task);
         return task;
     }
 
     @Override
-    public Task updateEpic(Epic epic) {
+    public Task updateEpic(Epic epic) throws IOException {
         Epic oldEpic = epics.get(epic.getId());
         oldEpic.setName(epic.getName());
         oldEpic.setDescription(epic.getDescription());
@@ -141,7 +157,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask updateSubtask(Subtask subtask) {
+    public Subtask updateSubtask(Subtask subtask) throws IOException {
         int epicId = subtask.getEpicId();
         Subtask oldSubtask = subtasks.get(subtask.getId());
         oldSubtask.setName(subtask.getName());
@@ -152,12 +168,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTaskById(int id) {
+    public void removeTaskById(int id) throws IOException {
         tasks.remove(id);
     }
 
     @Override
-    public void removeEpicById(int id) {
+    public void removeEpicById(int id) throws IOException {
         ArrayList<Subtask> epicSubtasks = epics.remove(id).getSubtaskList();
         for (Subtask subtask : epicSubtasks) {
             subtasks.remove(subtask.getId());
@@ -165,7 +181,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeSubtaskById(int id) {
+    public void removeSubtaskById(int id) throws IOException {
         Subtask subtask = subtasks.remove(id);
         int epicId = subtask.getEpicId();
         Epic epic = epics.get(epicId);
