@@ -35,7 +35,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int generatorId(){
+    public int generatorId() {
         generatorId++;
         return generatorId;
     }
