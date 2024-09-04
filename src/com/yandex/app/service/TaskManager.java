@@ -5,15 +5,14 @@ import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
-    ArrayList<Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
-    ArrayList<Subtask> getAllSubtasks();
+    List<Subtask> getAllSubtasks();
 
     int generatorId();
 

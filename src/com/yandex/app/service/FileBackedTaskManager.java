@@ -18,7 +18,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    public void save() {
+    private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write(Header);
             for (Task task : getAllTasks()) {
@@ -64,73 +64,73 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public int addNewTask(Task task) throws IOException {
+    public int addNewTask(Task task)  {
         save();
         return super.addNewTask(task);
     }
 
     @Override
-    public int addNewEpic(Epic epic) throws IOException {
+    public int addNewEpic(Epic epic) {
         save();
         return super.addNewEpic(epic);
     }
 
     @Override
-    public int addNewSubtask(Subtask subtask) throws IOException {
+    public int addNewSubtask(Subtask subtask) {
         save();
         return super.addNewSubtask(subtask);
     }
 
     @Override
-    public void removeTasks() throws IOException {
+    public void removeTasks() {
         super.removeTasks();
         save();
     }
 
     @Override
-    public void removeEpics() throws IOException {
+    public void removeEpics() {
         super.removeEpics();
         save();
     }
 
     @Override
-    public void removeSubtasks() throws IOException {
+    public void removeSubtasks() {
         super.removeSubtasks();
         save();
     }
 
     @Override
-    public Task updateTask(Task task) throws IOException {
+    public Task updateTask(Task task) {
         save();
         return super.updateTask(task);
     }
 
     @Override
-    public Task updateEpic(Epic epic) throws IOException {
+    public Task updateEpic(Epic epic) {
         save();
         return super.updateEpic(epic);
     }
 
     @Override
-    public Subtask updateSubtask(Subtask subtask) throws IOException {
+    public Subtask updateSubtask(Subtask subtask) {
         save();
         return super.updateSubtask(subtask);
     }
 
     @Override
-    public void removeTaskById(int id) throws IOException {
+    public void removeTaskById(int id) {
         super.removeTaskById(id);
         save();
     }
 
     @Override
-    public void removeEpicById(int id) throws IOException {
+    public void removeEpicById(int id) {
         super.removeEpicById(id);
         save();
     }
 
     @Override
-    public void removeSubtaskById(int id) throws IOException {
+    public void removeSubtaskById(int id) {
         super.removeSubtaskById(id);
         save();
     }

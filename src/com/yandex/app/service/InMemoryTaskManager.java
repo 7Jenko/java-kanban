@@ -41,7 +41,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addNewTask(Task task) throws IOException {
+    public int addNewTask(Task task) {
         final int id = ++generatorId;
         task.setId(id);
         tasks.put(id, task);
@@ -49,7 +49,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addNewEpic(Epic epic) throws IOException {
+    public int addNewEpic(Epic epic) {
         final int id = ++generatorId;
         epic.setId(id);
         epics.put(id, epic);
@@ -57,7 +57,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public int addNewSubtask(Subtask subtask) throws IOException {
+    public int addNewSubtask(Subtask subtask)  {
         final int id = ++generatorId;
         subtask.setId(id);
         subtasks.put(id, subtask);
@@ -108,18 +108,18 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTasks() throws IOException {
+    public void removeTasks() {
         tasks.clear();
     }
 
     @Override
-    public void removeEpics() throws IOException {
+    public void removeEpics() {
         epics.clear();
         subtasks.clear();
     }
 
     @Override
-    public void removeSubtasks() throws IOException {
+    public void removeSubtasks() {
         subtasks.clear();
         for (Epic epic : epics.values()) {
             epic.removeSubtasks();
@@ -143,13 +143,13 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task updateTask(Task task) throws IOException {
+    public Task updateTask(Task task) {
         tasks.put(task.getId(), task);
         return task;
     }
 
     @Override
-    public Task updateEpic(Epic epic) throws IOException {
+    public Task updateEpic(Epic epic)  {
         Epic oldEpic = epics.get(epic.getId());
         oldEpic.setName(epic.getName());
         oldEpic.setDescription(epic.getDescription());
@@ -157,7 +157,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask updateSubtask(Subtask subtask) throws IOException {
+    public Subtask updateSubtask(Subtask subtask) {
         int epicId = subtask.getEpicId();
         Subtask oldSubtask = subtasks.get(subtask.getId());
         oldSubtask.setName(subtask.getName());
@@ -168,12 +168,12 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeTaskById(int id) throws IOException {
+    public void removeTaskById(int id) {
         tasks.remove(id);
     }
 
     @Override
-    public void removeEpicById(int id) throws IOException {
+    public void removeEpicById(int id) {
         ArrayList<Subtask> epicSubtasks = epics.remove(id).getSubtaskList();
         for (Subtask subtask : epicSubtasks) {
             subtasks.remove(subtask.getId());
@@ -181,7 +181,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void removeSubtaskById(int id) throws IOException {
+    public void removeSubtaskById(int id) {
         Subtask subtask = subtasks.remove(id);
         int epicId = subtask.getEpicId();
         Epic epic = epics.get(epicId);
