@@ -34,6 +34,8 @@ class FileBackedTaskManagerTest {
         Task task2 = new Task(2, "Task2", TaskStatus.NEW, "description2");
         fileBackedTaskManager.addNewTask(task2);
 
+        fileBackedTaskManager.save();
+
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
         List<Task> loadedTasks = loadedManager.getAllTasks();
 
