@@ -50,11 +50,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 Task task = manager.fromString(line);
 
                 if (task.getType() == TaskType.TASK) {
-                    tasks.put(task.getId(), task);
+                    manager.tasks.put(task.getId(), task);
                 } else if (task.getType() == TaskType.EPIC) {
-                    epics.put(task.getId(), (Epic) task);
+                    manager.epics.put(task.getId(), (Epic) task);
                 } else if (task.getType() == TaskType.SUBTASK) {
-                    subtasks.put(task.getId(), (Subtask) task);
+                    manager.subtasks.put(task.getId(), (Subtask) task);
                 }
             }
         } catch (IOException e) {

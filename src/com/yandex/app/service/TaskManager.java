@@ -4,7 +4,6 @@ import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface TaskManager {
@@ -16,11 +15,11 @@ public interface TaskManager {
 
     int generatorId();
 
-    int addNewTask(Task task) throws IOException;
+    int addNewTask(Task task);
 
-    int addNewEpic(Epic epic) throws IOException;
+    int addNewEpic(Epic epic);
 
-    int addNewSubtask(Subtask subtask) throws IOException;
+    int addNewSubtask(Subtask subtask);
 
     List<Task> getTasks();
 
@@ -36,11 +35,11 @@ public interface TaskManager {
 
     Task getSubtask(int id);
 
-    void removeTasks() throws IOException;
+    void removeTasks();
 
-    void removeEpics() throws IOException;
+    void removeEpics();
 
-    void removeSubtasks() throws IOException;
+    void removeSubtasks();
 
     Task getTaskById(int id);
 
@@ -48,17 +47,17 @@ public interface TaskManager {
 
     Subtask getSubtaskById(int id);
 
-    Task updateTask(Task task) throws IOException;
+    Task updateTask(Task task);
 
-    Task updateEpic(Epic epic) throws IOException;
+    Task updateEpic(Epic epic);
 
-    Subtask updateSubtask(Subtask subtask) throws IOException;
+    Subtask updateSubtask(Subtask subtask);
 
-    void removeTaskById(int id) throws IOException;
+    void removeTaskById(int id);
 
-    void removeEpicById(int id) throws IOException;
+    void removeEpicById(int id);
 
-    void removeSubtaskById(int id) throws IOException;
+    void removeSubtaskById(int id);
 
     List<Task> getHistory();
 }
