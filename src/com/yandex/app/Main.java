@@ -7,10 +7,13 @@ import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 
+import java.io.File;
+import java.io.IOException;
+
 public class Main {
 
-    public static void main(String[] args) {
-        TaskManager manager = Managers.getDefault();
+    public static void main(String[] args) throws IOException {
+        TaskManager manager = Managers.getDefault(new File("./src/com/yandex/app/files/save.csv"));
 
         Task task1 = new Task("Переезд", TaskStatus.NEW, "Собрать вещи");
         final int taskId1 = manager.addNewTask(task1);

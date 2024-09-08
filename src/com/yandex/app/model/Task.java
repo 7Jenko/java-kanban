@@ -24,14 +24,22 @@ public class Task {
         this.description = description;
     }
 
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", status=" + status +
-                ", description='" + description + '\'' +
-                '}';
+        return id +
+                "," + getType() +
+                "," + name +
+                "," + status +
+                "," + description;
+    }
+
+    public TaskType getType() {
+        return TaskType.TASK;
     }
 
     public int getId() {

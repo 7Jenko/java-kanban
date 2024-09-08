@@ -7,6 +7,12 @@ import com.yandex.app.model.Task;
 import java.util.List;
 
 public interface TaskManager {
+    List<Task> getAllTasks();
+
+    List<Epic> getAllEpics();
+
+    List<Subtask> getAllSubtasks();
+
     int generatorId();
 
     int addNewTask(Task task);

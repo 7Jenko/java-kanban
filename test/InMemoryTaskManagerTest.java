@@ -6,6 +6,8 @@ import com.yandex.app.service.TaskManager;
 import com.yandex.app.status.TaskStatus;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
@@ -32,7 +34,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void epicCannotAddedToItselfAsASubtask() {
+    void epicCannotAddedToItselfAsASubtask() throws IOException {
         TaskManager manager = Managers.getDefault();
         Epic epic1 = new Epic(1, "Epic1", TaskStatus.NEW, "description");
         manager.addNewEpic(epic1);
@@ -43,7 +45,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void subtaskCannotBeMadeIntoItsOwnEpic() {
+    public void subtaskCannotBeMadeIntoItsOwnEpic() throws IOException {
         TaskManager manager = Managers.getDefault();
         Epic epic1 = new Epic(1, "Epic1", TaskStatus.NEW, "description");
         manager.addNewEpic(epic1);
@@ -53,7 +55,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void checkIfCanAddDiffTypes() {
+    void checkIfCanAddDiffTypes() throws IOException {
         TaskManager manager = Managers.getDefault();
         Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description");
         manager.addNewTask(task1);
@@ -68,7 +70,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void immutabilityAddingTaskToManager() {
+    void immutabilityAddingTaskToManager() throws IOException {
         TaskManager manager = Managers.getDefault();
         Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description1");
         manager.addNewTask(task1);
@@ -79,7 +81,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void givenIdGeneratedIdDontConflict() {
+    void givenIdGeneratedIdDontConflict() throws IOException {
         TaskManager manager = Managers.getDefault();
         Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description1");
         manager.addNewTask(task1);
@@ -92,7 +94,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void deletedSubtasksShouldNotStoreOldIds() {
+    void deletedSubtasksShouldNotStoreOldIds() throws IOException {
         TaskManager manager = Managers.getDefault();
         Epic epic1 = new Epic(1, "Epic1", TaskStatus.NEW, "description");
         manager.addNewEpic(epic1);
@@ -103,7 +105,7 @@ class InMemoryTaskManagerTest {
         }
 
     @Test
-    void shouldBeNoIrrelevantIdSubtasksInsideEpics() {
+    void shouldBeNoIrrelevantIdSubtasksInsideEpics() throws IOException {
         TaskManager manager = Managers.getDefault();
         Epic epic1 = new Epic(1, "Epic1", TaskStatus.NEW, "description");
         manager.addNewEpic(epic1);
@@ -114,7 +116,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void usingSettersAllowToChangeTheirFields() {
+    void usingSettersAllowToChangeTheirFields() throws IOException {
         TaskManager manager = Managers.getDefault();
         Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description1");
         final int taskId1 = manager.addNewTask(task1);
