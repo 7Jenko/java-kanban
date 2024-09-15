@@ -2,6 +2,8 @@ package com.yandex.app.model;
 
 import com.yandex.app.status.TaskStatus;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Subtask extends Task {
@@ -23,6 +25,24 @@ public class Subtask extends Task {
         this.epicId = epicId;
     }
 
+    public Subtask(Integer id, TaskType type, String name, TaskStatus status, String description,
+                   Integer epicId) {
+        super(id, name, status, description);
+        this.type = type;
+        this.epicId = epicId;
+    }
+
+    public Subtask(Integer id, TaskType type, String name, TaskStatus status, String description, Duration duration,
+                   LocalDateTime startTime, Integer epicId) {
+        super(id, type, name, status, description, duration, startTime);
+        this.epicId = epicId;
+    }
+
+    public Subtask(String name, String description, int epicId, Duration duration, LocalDateTime startTime) {
+        super(name, description, duration, startTime);
+        this.epicId = epicId;
+    }
+
     public int getEpicId() {
         return epicId;
     }
@@ -39,6 +59,8 @@ public class Subtask extends Task {
                 "," + name +
                 "," + status +
                 "," + description +
+                "," + duration +
+                "," + startTime +
                 "," + epicId;
     }
 

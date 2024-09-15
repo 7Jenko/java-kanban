@@ -5,6 +5,7 @@ import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
     List<Task> getAllTasks();
@@ -60,4 +61,6 @@ public interface TaskManager {
     void removeSubtaskById(int id);
 
     List<Task> getHistory();
+
+    TreeSet<Task> getPrioritizedTasks();
 }
