@@ -70,7 +70,7 @@ public class Epic extends Task {
                 "," + getType() +
                 "," + name +
                 "," + status +
-                "," + description+
+                "," + description +
                 "," + duration+
                 "," + startTime;
     }
