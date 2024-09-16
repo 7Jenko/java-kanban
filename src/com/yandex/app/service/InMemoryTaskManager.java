@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    protected TreeSet<Task> prioritizedTasks = new TreeSet<>();
+    protected Set<Task> prioritizedTasks = new TreeSet<>();
 
     protected int generatorId = 0;
 
@@ -41,26 +41,36 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int addNewTask(Task task) {
-        overlapTask(task);
+        if (overlapTask(task)) {
+            System.out.println("Задача пересекается по времени с уже существующими задачами и не была добавлена.");
+            return -1;
+        }
         final int id = ++generatorId;
         task.setId(id);
         tasks.put(id, task);
-        updatePrioritizedTasks();
+        updatePrioritizedTasks(task);
         return id;
     }
 
     @Override
     public int addNewEpic(Epic epic) {
+        if (overlapTask(epic)) {
+            System.out.println("Эпик пересекается по времени с уже существующими задачами и не был добавлен.");
+            return -1;
+        }
         final int id = ++generatorId;
         epic.setId(id);
         epics.put(id, epic);
-        overlapTask(epic);
         return id;
     }
 
     @Override
     public int addNewSubtask(Subtask subtask)  {
         overlapTask(subtask);
+        if (overlapTask(subtask)) {
+            System.out.println("Подзадача пересекается по времени с уже существующими задачами и не была добавлена.");
+            return -1;
+        }
         final int id = ++generatorId;
         subtask.setId(id);
         subtasks.put(id, subtask);
@@ -69,7 +79,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setDuration(getDuration(epic));
         epic.setStartTime(getStartTime(epic));
         epic.setEndTime(getEndTime(epic));
-        updatePrioritizedTasks();
+        updatePrioritizedTasks(subtask);
         updateEpicStatus(epic);
         return id;
     }
@@ -153,7 +163,7 @@ public class InMemoryTaskManager implements TaskManager {
     public Task updateTask(Task task) {
         overlapTask(task);
         tasks.put(task.getId(), task);
-        updatePrioritizedTasks();
+        updatePrioritizedTasks(task);
         return task;
     }
 
@@ -162,7 +172,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic oldEpic = epics.get(epic.getId());
         oldEpic.setName(epic.getName());
         oldEpic.setDescription(epic.getDescription());
-        updatePrioritizedTasks();
+        updatePrioritizedTasks(epic);
         return oldEpic;
     }
 
@@ -176,7 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setDuration(getDuration(epic));
         epic.setStartTime(getStartTime(epic));
         epic.setEndTime(getEndTime(epic));
-        updatePrioritizedTasks();
+        updatePrioritizedTasks(subtask);
         updateEpicStatus(epic);
         return subtask;
     }
@@ -210,7 +220,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public TreeSet<Task> getPrioritizedTasks() {
+    public Set<Task> getPrioritizedTasks() {
         return prioritizedTasks;
     }
 
@@ -237,29 +247,21 @@ public class InMemoryTaskManager implements TaskManager {
                 .reduce(Duration.ZERO, Duration::plus);
     }
 
-    private void updatePrioritizedTasks() {
-        List<Task> tasks = getTasks();
-        List<Subtask> subtasks = getSubtasks();
-        tasks.addAll(subtasks);
-        List<Task> tasksWithStartTime = tasks.stream()
-                .filter(task -> task.getStartTime() != null)
-                .toList();
-        prioritizedTasks.addAll(tasksWithStartTime);
+    private void updatePrioritizedTasks(Task task) {
+        if (task.getStartTime() != null) {
+            prioritizedTasks.add(task);
+        }
     }
 
-    private void overlapTask(Task task) {
+    private boolean overlapTask(Task task) {
         if (task.getStartTime() == null) {
-            return;
+            return false;
         }
-        boolean overlapTime = prioritizedTasks.stream()
+        return prioritizedTasks.stream()
                 .anyMatch(task1 -> {
-                    LocalDateTime endTime = task.getStartTime().plus(task.getDuration());
-                    return (endTime.isAfter(task1.getStartTime()) && task.getStartTime().isBefore(task1.getStartTime()
-                            .plus(task1.getDuration())));
+                    LocalDateTime endTime = task.getEndTime(); // Используем новый метод
+                    return (endTime.isAfter(task1.getStartTime()) && task.getStartTime().isBefore(task1.getEndTime()));
                 });
-        if (overlapTime) {
-            throw new ManagerSaveException("Задачи пересекаются по времени");
-        }
     }
 
     private void updateEpicStatus(Epic epic) {

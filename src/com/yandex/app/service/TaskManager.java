@@ -5,7 +5,7 @@ import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 
 import java.util.List;
-import java.util.TreeSet;
+import java.util.Set;
 
 public interface TaskManager {
     List<Task> getAllTasks();
@@ -62,5 +62,5 @@ public interface TaskManager {
 
     List<Task> getHistory();
 
-    TreeSet<Task> getPrioritizedTasks();
+    Set<Task> getPrioritizedTasks();
 }

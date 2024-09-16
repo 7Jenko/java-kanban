@@ -136,6 +136,13 @@ public class Task implements Comparable {
         this.startTime = startTime;
     }
 
+    public LocalDateTime getEndTime() {
+        if (startTime == null || duration == null) {
+            return null;
+        }
+        return startTime.plus(duration);
+    }
+
     @Override
     public int compareTo(Object o) {
         Task task = (Task) o;

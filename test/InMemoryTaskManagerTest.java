@@ -197,10 +197,14 @@ class InMemoryTaskManagerTest {
         TaskManager manager = Managers.getDefault();
         Task task1 = new Task("Task 1", "description", Duration.ofMinutes(10), LocalDateTime.now());
         manager.addNewTask(task1);
+
         Task task2 = new Task("Task 2", "description", Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(5));
-        ManagerSaveException thrown = assertThrows(ManagerSaveException.class, () -> {
-            manager.addNewTask(task2);
-        });
-        assertEquals("Задачи пересекаются по времени", thrown.getMessage());
+
+        int initialSize = manager.getPrioritizedTasks().size();
+        int result = manager.addNewTask(task2);
+
+        assertEquals(initialSize, manager.getPrioritizedTasks().size(), "Пересекающаяся задача не должна добавляться");
+        assertEquals(-1, result, "Метод должен вернуть -1 при пересечении");
     }
+
 }
