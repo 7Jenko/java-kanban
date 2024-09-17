@@ -1,4 +1,5 @@
 import com.yandex.app.model.Task;
+import com.yandex.app.model.TaskType;
 import com.yandex.app.service.FileBackedTaskManager;
 import com.yandex.app.status.TaskStatus;
 import org.junit.jupiter.api.Assertions;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 class FileBackedTaskManagerTest {
@@ -28,10 +31,10 @@ class FileBackedTaskManagerTest {
 
     @Test
     void savingAndLoadingMultipleTasks() throws IOException {
-        Task task1 = new Task(1, "Task1", TaskStatus.NEW, "description");
+        Task task1 = new Task(1, TaskType.TASK, "Task1", TaskStatus.NEW, "description", Duration.ofMinutes(10), LocalDateTime.now());
         fileBackedTaskManager.addNewTask(task1);
 
-        Task task2 = new Task(2, "Task2", TaskStatus.NEW, "description2");
+        Task task2 = new Task(2, TaskType.TASK, "Task2", TaskStatus.NEW, "description", Duration.ofMinutes(10), LocalDateTime.now().plusHours(1));
         fileBackedTaskManager.addNewTask(task2);
 
         fileBackedTaskManager.save();

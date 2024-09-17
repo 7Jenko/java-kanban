@@ -1,12 +1,17 @@
 import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
+import com.yandex.app.model.TaskType;
+import com.yandex.app.service.ManagerSaveException;
 import com.yandex.app.service.Managers;
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.status.TaskStatus;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -127,4 +132,79 @@ class InMemoryTaskManagerTest {
         assertNotEquals(arrayOne, arrayTwo, "Задачи с одинаковыми id должны быть одинаковыми. " +
                 "Чтобы не допустить изменений полей с помощью сеттеров, используйте final в объявлении задач.");
     }
+    @Test
+    public void checkEpicsStatusIsNew() {
+        TaskManager manager = Managers.getDefault();
+        Epic epic = new Epic(1, TaskType.EPIC, "Epic", TaskStatus.DONE, "description",
+                new ArrayList());
+        manager.addNewEpic(epic);
+        Subtask subtask1 = new Subtask(2,TaskType.SUBTASK,"Subtask1", TaskStatus.NEW,
+                "description", epic.getId());
+        Subtask subtask2 = new Subtask(3,TaskType.SUBTASK, "Subtask2", TaskStatus.NEW,
+                "description", epic.getId());
+        manager.addNewSubtask(subtask1);
+        manager.addNewSubtask(subtask2);
+        assertEquals(TaskStatus.NEW, epic.getStatus());
+    }
+
+    @Test
+    public void checkEpicsStatusIsDone() {
+        TaskManager manager = Managers.getDefault();
+        Epic epic = new Epic(1, TaskType.EPIC, "Epic", TaskStatus.DONE, "description",
+                new ArrayList());
+        manager.addNewEpic(epic);
+        Subtask subtask1 = new Subtask(2,TaskType.SUBTASK,"Subtask1", TaskStatus.DONE,
+                "description", epic.getId());
+        Subtask subtask2 = new Subtask(3, TaskType.SUBTASK, "Subtask2", TaskStatus.DONE,
+                "description", epic.getId());
+        manager.addNewSubtask(subtask1);
+        manager.addNewSubtask(subtask2);
+        assertEquals(TaskStatus.DONE, epic.getStatus());
+    }
+
+    @Test
+    public void checkEpicsStatusIsInProgress() {
+        TaskManager manager = Managers.getDefault();
+        Epic epic = new Epic(1, TaskType.EPIC, "Epic", TaskStatus.NEW, "description",
+                new ArrayList());
+        manager.addNewEpic(epic);
+        Subtask subtask1 = new Subtask(2,TaskType.SUBTASK,"Subtask1", TaskStatus.DONE,
+                "description", epic.getId());
+        Subtask subtask2 = new Subtask(3, TaskType.SUBTASK, "Subtask2", TaskStatus.NEW,
+                "description", epic.getId());
+        manager.addNewSubtask(subtask1);
+        manager.addNewSubtask(subtask2);
+        assertEquals(TaskStatus.IN_PROGRESS, epic.getStatus());
+    }
+
+    @Test
+    public void checkSubtaskNotEmpty() {
+        TaskManager manager = Managers.getDefault();
+        Epic epic1 = new Epic("Epic", "description");
+        manager.addNewEpic(epic1);
+        Subtask subtaskWithTime = new Subtask(2, TaskType.SUBTASK, "Subtask 1", TaskStatus.NEW,
+                "description", Duration.ofMinutes(120), LocalDateTime.now(), epic1.getId());
+        manager.addNewSubtask(subtaskWithTime);
+        Epic epic = manager.getEpicById(subtaskWithTime.getEpicId());
+        assertNotNull(subtaskWithTime);
+        assertEquals(subtaskWithTime.getDuration(), epic.getDuration());
+        assertEquals(subtaskWithTime.getStartTime(), epic.getStartTime());
+        assertEquals(epic.getEndTime(), epic.getStartTime().plus(epic.getDuration()));
+    }
+
+    @Test
+    public void shouldNotAddOverlappingTasks() {
+        TaskManager manager = Managers.getDefault();
+        Task task1 = new Task("Task 1", "description", Duration.ofMinutes(10), LocalDateTime.now());
+        manager.addNewTask(task1);
+
+        Task task2 = new Task("Task 2", "description", Duration.ofMinutes(10), LocalDateTime.now().plusMinutes(5));
+
+        int initialSize = manager.getPrioritizedTasks().size();
+        int result = manager.addNewTask(task2);
+
+        assertEquals(initialSize, manager.getPrioritizedTasks().size(), "Пересекающаяся задача не должна добавляться");
+        assertEquals(-1, result, "Метод должен вернуть -1 при пересечении");
+    }
+
 }
