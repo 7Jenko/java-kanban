@@ -1,7 +1,6 @@
 package com.yandex.app.http;
 
 import com.google.gson.GsonBuilder;
-import com.sun.net.httpserver.HttpHandler;
 
 import com.yandex.app.model.Epic;
 import com.yandex.app.service.TaskManager;
@@ -17,8 +16,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class EpicHandler extends BaseHttpHandler implements HttpHandler {
+public class EpicHandler extends BaseHttpHandler {
     private final Gson gson;
     private final TaskManager taskManager;
 
@@ -68,7 +68,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     private void handlePostEpic(HttpExchange exchange) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(),
                 StandardCharsets.UTF_8))) {
-            String json = reader.lines().collect(java.util.stream.Collectors.joining());
+            String json = reader.lines().collect(Collectors.joining());
             Epic epic = gson.fromJson(json, Epic.class);
 
             if (epic.getId() > 0) {

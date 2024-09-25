@@ -6,7 +6,6 @@ import com.yandex.app.service.ManagerException;
 import com.yandex.app.service.TaskManager;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 import com.yandex.app.utils.DurationAdapter;
 import com.yandex.app.utils.LocalDateTimeAdapter;
 
@@ -17,8 +16,9 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
+public class SubtaskHandler extends BaseHttpHandler {
     private final Gson gson;
     private final TaskManager taskManager;
 
@@ -68,7 +68,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     private void handlePostSubtask(HttpExchange exchange) throws IOException {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(exchange.getRequestBody(),
                 StandardCharsets.UTF_8))) {
-            String json = reader.lines().collect(java.util.stream.Collectors.joining());
+            String json = reader.lines().collect(Collectors.joining());
             Subtask subtask = gson.fromJson(json, Subtask.class);
 
             if (subtask.getId() > 0) {
