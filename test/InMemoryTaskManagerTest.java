@@ -2,7 +2,6 @@ import com.yandex.app.model.Epic;
 import com.yandex.app.model.Subtask;
 import com.yandex.app.model.Task;
 import com.yandex.app.model.TaskType;
-import com.yandex.app.service.ManagerSaveException;
 import com.yandex.app.service.Managers;
 import com.yandex.app.service.TaskManager;
 import com.yandex.app.status.TaskStatus;

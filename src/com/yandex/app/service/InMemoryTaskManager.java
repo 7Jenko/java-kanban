@@ -14,7 +14,19 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-    protected Set<Task> prioritizedTasks = new TreeSet<>();
+
+    protected Set<Task> prioritizedTasks = new TreeSet<>((task1, task2) -> {
+        if (task1.getStartTime() == null && task2.getStartTime() == null) {
+            return 0;
+        }
+        if (task1.getStartTime() == null) {
+            return -1;
+        }
+        if (task2.getStartTime() == null) {
+            return 1;
+        }
+        return task1.getStartTime().compareTo(task2.getStartTime());
+    });
 
     protected int generatorId = 0;
 
@@ -146,17 +158,29 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        return tasks.get(id);
+        Task task = tasks.get(id);
+        if (task != null) {
+            historyManager.addTask(task);
+        }
+        return task;
     }
 
     @Override
     public Epic getEpicById(int id) {
-        return epics.get(id);
+        Epic epic = epics.get(id);
+        if (epic != null) {
+            historyManager.addTask(epic);
+        }
+        return epic;
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        return subtasks.get(id);
+        Subtask subtask = subtasks.get(id);
+        if (subtask != null) {
+            historyManager.addTask(subtask);
+        }
+        return subtask;
     }
 
     @Override
@@ -248,9 +272,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private void updatePrioritizedTasks(Task task) {
-        if (task.getStartTime() != null) {
             prioritizedTasks.add(task);
-        }
     }
 
     private boolean overlapTask(Task task) {
@@ -259,7 +281,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return prioritizedTasks.stream()
                 .anyMatch(task1 -> {
-                    LocalDateTime endTime = task.getEndTime(); // Используем новый метод
+                    LocalDateTime endTime = task.getEndTime();
                     return (endTime.isAfter(task1.getStartTime()) && task.getStartTime().isBefore(task1.getEndTime()));
                 });
     }
